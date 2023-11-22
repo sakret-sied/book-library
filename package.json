@@ -25,5 +25,8 @@
     "prettier": "^3.1.0",
     "rollup": "^4.5.1",
     "rollup-plugin-import-css": "^3.3.5"
+  },
+  "dependencies": {
+    "on-change": "^4.0.2"
   }
 }
