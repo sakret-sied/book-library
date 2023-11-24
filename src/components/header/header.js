@@ -5,11 +5,11 @@ export class Header extends DivComponent {
   constructor(appState) {
     super();
     this.appState = appState;
+    this.element.classList.add('header');
   }
 
   render() {
-    this.el.classList.add('header');
-    this.el.innerHTML = `
+    this.element.innerHTML = `
       <div>
         <img src="/static/logo.svg" alt="Logo" />
       </div>
@@ -25,6 +25,6 @@ export class Header extends DivComponent {
         </a>
       </div>
     `;
-    return this.el;
+    return this.element;
   }
 }

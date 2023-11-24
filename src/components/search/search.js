@@ -5,11 +5,11 @@ export class Search extends DivComponent {
   constructor(state) {
     super();
     this.state = state;
+    this.element.classList.add('search');
   }
 
   render() {
-    this.el.classList.add('search');
-    this.el.innerHTML = `
+    this.element.innerHTML = `
       <div class="search__wrapper">
         <input 
             type="text"
@@ -23,19 +23,23 @@ export class Search extends DivComponent {
         <img src="/static/search-white.svg" alt="Search white icon" />
       </button>
     `;
-    this.el
+    this.#addEventsToElement();
+    return this.element;
+  }
+
+  #addEventsToElement() {
+    this.element
       .querySelector('button')
       .addEventListener('click', this.#search.bind(this));
-    this.el.querySelector('input').addEventListener('keyup', (event) => {
+    this.element.querySelector('input').addEventListener('keyup', (event) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         this.#search();
       }
     });
-    return this.el;
   }
 
   #search() {
-    const value = this.el.querySelector('input').value;
+    const value = this.element.querySelector('input').value;
     this.state.searchQuery = value;
   }
 }

@@ -3,8 +3,14 @@ import { AbstractView } from '../../common/view.js';
 import { Header } from '../../components/header/header.js';
 import { Search } from '../../components/search/search.js';
 import { BookList } from '../../components/book-list/book-list.js';
+import { DivComponent } from '../../common/div-component.js';
 
 export class MainView extends AbstractView {
+  static HEADER = 'header';
+  static MAIN = 'main';
+  static SEARCH = 'search';
+  static BOOK_LIST = 'book-list';
+
   state = {
     list: [],
     loading: false,
@@ -21,17 +27,30 @@ export class MainView extends AbstractView {
   }
 
   render() {
-    const main = document.createElement('div');
-    main.append(new Search(this.state).render());
-    main.append(new BookList(this.appState, this.state).render());
     this.app.innerHTML = '';
-    this.app.append(main);
+    this.#renderMain();
     this.#renderHeader();
+    this.#renderSearch();
+    this.#renderBookList();
+  }
+
+  #renderMain() {
+    this.elements.render(MainView.MAIN, new DivComponent());
   }
 
   #renderHeader() {
-    const header = new Header(this.appState).render();
-    this.app.prepend(header);
+    this.elements.render(MainView.HEADER, new Header(this.appState));
+  }
+
+  #renderSearch() {
+    this.elements.render(MainView.SEARCH, new Search(this.state));
+  }
+
+  #renderBookList() {
+    this.elements.render(
+      MainView.BOOK_LIST,
+      new BookList(this.appState, this.state),
+    );
   }
 
   #appStateHook(path) {
@@ -52,7 +71,7 @@ export class MainView extends AbstractView {
     }
 
     if (path === 'list' || path === 'loading') {
-      this.render();
+      this.#renderBookList();
     }
   }
 
