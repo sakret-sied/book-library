@@ -1,6 +1,6 @@
 export class AbstractView {
   constructor() {
-    this.app = document.querySelector("#root");
+    this.app = document.querySelector('#root');
   }
 
   setTitle(title) {

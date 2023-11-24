@@ -1,0 +1,13 @@
+.book-list__loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  padding: 30px;
+}
+
+.book__list h1 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}

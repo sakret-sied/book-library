@@ -1,14 +1,15 @@
-import { MainView } from "./views/main/main.js";
+import { MainView } from './views/main/main.js';
+import './app.css';
 
 class App {
-  routes = [{ path: "", view: MainView }];
+  routes = [{ path: '', view: MainView }];
 
   appState = {
     favorites: [],
   };
 
   constructor() {
-    window.addEventListener("hashchange", this.route.bind(this));
+    window.addEventListener('hashchange', this.route.bind(this));
     this.route();
   }
 
