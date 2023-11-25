@@ -17,10 +17,10 @@ export class Search extends DivComponent {
             class="search__input"
             value="${this.state.searchQuery ?? ''}"
         />
-        <img src="/static/search.svg" alt="Search icon" />
+        <img src="/static/icon/search-black.svg" alt="Search icon" />
       </div>
       <button aria-label="Search">
-        <img src="/static/search-white.svg" alt="Search white icon" />
+        <img src="/static/icon/search-white.svg" alt="Search white icon" />
       </button>
     `;
     this.#addEventsToElement();

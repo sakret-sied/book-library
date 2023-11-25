@@ -1,18 +1,18 @@
 import onChange from 'on-change';
+import { DivComponent } from '../../common/div-component.js';
 import { AbstractView } from '../../common/view.js';
+import { BookList } from '../../components/book-list/book-list.js';
 import { Header } from '../../components/header/header.js';
 import { Search } from '../../components/search/search.js';
-import { BookList } from '../../components/book-list/book-list.js';
-import { DivComponent } from '../../common/div-component.js';
 
 export class MainView extends AbstractView {
+  static BOOK_LIST = 'book-list';
   static HEADER = 'header';
   static MAIN = 'main';
   static SEARCH = 'search';
-  static BOOK_LIST = 'book-list';
 
   state = {
-    list: [],
+    data: undefined,
     loading: false,
     searchQuery: undefined,
     offset: 0,
@@ -31,7 +31,6 @@ export class MainView extends AbstractView {
     this.#renderMain();
     this.#renderHeader();
     this.#renderSearch();
-    this.#renderBookList();
   }
 
   #renderMain() {
@@ -54,24 +53,26 @@ export class MainView extends AbstractView {
   }
 
   #appStateHook(path) {
-    if (path === 'favorites') {
-      console.log(path);
+    switch (path) {
+      case 'favorites':
+        this.#renderHeader();
+        break;
     }
   }
 
   async #stateHook(path) {
-    if (path === 'searchQuery') {
-      this.state.loading = true;
-      const data = await this.#loadList(
-        this.state.searchQuery,
-        this.state.offset,
-      );
-      this.state.loading = false;
-      this.state.list = data.docs;
-    }
-
-    if (path === 'list' || path === 'loading') {
-      this.#renderBookList();
+    switch (path) {
+      case 'searchQuery':
+        this.state.loading = true;
+        this.state.data = await this.#loadList(
+          this.state.searchQuery,
+          this.state.offset,
+        );
+        this.state.loading = false;
+        break;
+      case 'loading':
+        this.#renderBookList();
+        break;
     }
   }
 

@@ -11,17 +11,17 @@ export class Header extends DivComponent {
   render() {
     this.element.innerHTML = `
       <div>
-        <img src="/static/logo.svg" alt="Logo" />
+        <img src="/static/icon/logo.svg" alt="Logo" />
       </div>
       <div class="menu">
         <a class="menu__item" href="#">
-          <img src="/static/search.svg" alt="Search icon" />
+          <img src="/static/icon/search-black.svg" alt="Search icon" />
           Search book
         </a>
         <a class="menu__item" href="#favorites">
-          <img src="/static/favorites.svg" alt="Favorites" />
+          <img src="/static/icon/favorite-black.svg" alt="Favorites" />
           Favorites
-          <div class="menu__item--counter">${this.appState.favorites.length}</div>
+          <div class="menu__item--counter">${this.appState.favorites.arr.length}</div>
         </a>
       </div>
     `;

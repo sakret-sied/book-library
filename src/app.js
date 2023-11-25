@@ -1,14 +1,14 @@
-import { MainView } from './views/main/main.js';
 import './app.css';
+import { Favorites } from './common/favorites.js';
+import { MainView } from './views/main/main.js';
 
 class App {
   routes = [{ path: '', view: MainView }];
 
-  appState = {
-    favorites: [],
-  };
+  appState = {};
 
   constructor() {
+    this.appState.favorites = new Favorites([]);
     window.addEventListener('hashchange', this.route.bind(this));
     this.route();
   }
