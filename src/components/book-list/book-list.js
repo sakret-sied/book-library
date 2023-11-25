@@ -9,7 +9,7 @@ export class BookList extends DivComponent {
     super();
     this.appState = appState;
     this.parentState = parentState;
-    this.element.classList.add('book__list');
+    this.element.classList.add('book-list');
     this.#list = new Map();
   }
 
