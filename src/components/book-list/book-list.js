@@ -10,6 +10,7 @@ export class BookList extends DivComponent {
     this.appState = appState;
     this.parentState = parentState;
     this.element.classList.add('book-list');
+    this.element.addEventListener('click', this.#eventFavorites.bind(this));
     this.#list = new Map();
   }
 
@@ -20,26 +21,23 @@ export class BookList extends DivComponent {
     }
 
     this.element.innerHTML = `<h1>Books found - ${
-      this.parentState.data?.numFound ?? 0
+      this.parentState.numFound ?? 0
     }</h1>`;
-    this.parentState.data.docs.forEach((book, index) => {
+    this.parentState.list.forEach((book, index) => {
       this.#list.set(index, new Book(this.appState, book));
       this.element.append(this.#list.get(index).render(index));
     });
-    this.#addEventFavorites();
     return this.element;
   }
 
-  #addEventFavorites() {
-    this.element.addEventListener('click', (event) => {
-      const button = event.target.closest('button.button__add');
-      if (!button) {
-        return;
-      }
-      const id = parseInt(button.closest('.book').dataset.id);
-      const divComponent = this.#list.get(id);
-      this.appState.favorites.toggle(divComponent);
-      divComponent.render(id);
-    });
+  #eventFavorites(event) {
+    const button = event.target.closest('button.button__add');
+    if (!button) {
+      return;
+    }
+    const id = parseInt(button.closest('.book').dataset.id);
+    const book = this.#list.get(id);
+    this.appState.favorites.toggle(book.bookState);
+    book.render(id);
   }
 }

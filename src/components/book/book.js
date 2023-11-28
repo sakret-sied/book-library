@@ -10,7 +10,7 @@ export class Book extends DivComponent {
   }
 
   render(id) {
-    const existInFavorites = this.appState.favorites.isExist(this);
+    const isFavorites = this.appState.favorites.isExist(this.bookState);
     this.element.dataset.id = id;
     this.element.innerHTML = `
         <div class="book__image">
@@ -30,13 +30,11 @@ export class Book extends DivComponent {
             }</div>
             <div class="book__footer">
                 <button class="button__add ${
-                  existInFavorites ? 'button__active' : ''
+                  isFavorites ? 'button__active' : ''
                 }">
-                    ${
-                      existInFavorites
-                        ? '<img src="/static/icon/favorite-black.svg" />'
-                        : '<img src="/static/icon/favorite-white.svg" />'
-                    }
+                  <img src="/static/icon/favorite-${
+                    isFavorites ? 'black' : 'white'
+                  }.svg" />
                 </button>
             </div>
         </div>

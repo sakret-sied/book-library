@@ -1,20 +1,20 @@
 export class Favorites {
-  arr;
+  list;
 
   constructor(array) {
-    this.arr = array;
+    this.list = array;
   }
 
-  toggle(divComponent) {
-    const index = this.arr.indexOf(divComponent);
+  toggle(bookState) {
+    const index = this.list.indexOf(bookState);
     if (index !== -1) {
-      this.arr.splice(index, 1);
+      this.list.splice(index, 1);
     } else {
-      this.arr.push(divComponent);
+      this.list.push(bookState);
     }
   }
 
-  isExist(divComponent) {
-    return this.arr.includes(divComponent);
+  isExist(bookState) {
+    return this.list.includes(bookState);
   }
 }

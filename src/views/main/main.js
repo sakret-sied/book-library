@@ -1,18 +1,11 @@
 import onChange from 'on-change';
-import { DivComponent } from '../../common/div-component.js';
 import { AbstractView } from '../../common/view.js';
-import { BookList } from '../../components/book-list/book-list.js';
-import { Header } from '../../components/header/header.js';
 import { Search } from '../../components/search/search.js';
 
 export class MainView extends AbstractView {
-  static BOOK_LIST = 'book-list';
-  static HEADER = 'header';
-  static MAIN = 'main';
-  static SEARCH = 'search';
-
-  state = {
-    data: undefined,
+  viewState = {
+    list: [],
+    numFound: 0,
     loading: false,
     searchQuery: undefined,
     offset: 0,
@@ -21,62 +14,55 @@ export class MainView extends AbstractView {
   constructor(appState) {
     super();
     this.appState = appState;
-    this.appState = onChange(this.appState, this.#appStateHook.bind(this));
-    this.state = onChange(this.state, this.#stateHook.bind(this));
-    this.setTitle('Поиск книг');
+    this.appState = onChange(this.appState, this.appStateHook.bind(this));
+    this.viewState = onChange(this.viewState, this.stateHook.bind(this));
+    this.setTitle('Search book');
+  }
+
+  destroy() {
+    onChange.unsubscribe(this.appState);
+    onChange.unsubscribe(this.viewState);
   }
 
   render() {
     this.app.innerHTML = '';
-    this.#renderMain();
-    this.#renderHeader();
-    this.#renderSearch();
+    this.renderMain();
+    this.renderHeader();
+    this.renderSearch();
   }
 
-  #renderMain() {
-    this.elements.render(MainView.MAIN, new DivComponent());
+  renderSearch() {
+    this.elements.render(AbstractView.SEARCH, new Search(this.viewState));
   }
 
-  #renderHeader() {
-    this.elements.render(MainView.HEADER, new Header(this.appState));
-  }
-
-  #renderSearch() {
-    this.elements.render(MainView.SEARCH, new Search(this.state));
-  }
-
-  #renderBookList() {
-    this.elements.render(
-      MainView.BOOK_LIST,
-      new BookList(this.appState, this.state),
-    );
-  }
-
-  #appStateHook(path) {
+  appStateHook(path) {
     switch (path) {
       case 'favorites':
-        this.#renderHeader();
+        this.renderHeader();
         break;
     }
   }
 
-  async #stateHook(path) {
+  async stateHook(path) {
+    let res;
     switch (path) {
       case 'searchQuery':
-        this.state.loading = true;
-        this.state.data = await this.#loadList(
-          this.state.searchQuery,
-          this.state.offset,
+        this.viewState.loading = true;
+        res = await this.loadList(
+          this.viewState.searchQuery,
+          this.viewState.offset,
         );
-        this.state.loading = false;
+        this.viewState.list = res.docs;
+        this.viewState.numFound = res.numFound;
+        this.viewState.loading = false;
         break;
       case 'loading':
-        this.#renderBookList();
+        this.renderBookList();
         break;
     }
   }
 
-  async #loadList(q, offset) {
+  async loadList(q, offset) {
     const res = await fetch(
       `https://openlibrary.org/search.json?q=${q}&offset=${offset}`,
     );
