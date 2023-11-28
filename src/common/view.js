@@ -1,4 +1,3 @@
-import { BookList } from '../components/book-list/book-list.js';
 import { Header } from '../components/header/header.js';
 import { DivComponent } from './div-component.js';
 import { Elements } from './elements.js';
@@ -32,12 +31,5 @@ export class AbstractView {
 
   renderHeader() {
     this.elements.render(AbstractView.HEADER, new Header(this.appState));
-  }
-
-  renderBookList() {
-    this.elements.render(
-      AbstractView.BOOK_LIST,
-      new BookList(this.appState, this.viewState),
-    );
   }
 }

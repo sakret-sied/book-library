@@ -5,16 +5,20 @@ export class Favorites {
     this.list = array;
   }
 
-  toggle(bookState) {
-    const index = this.list.indexOf(bookState);
-    if (index !== -1) {
-      this.list.splice(index, 1);
-    } else {
-      this.list.push(bookState);
-    }
+  toggle(book) {
+    this.list = this.isExist(book) ? this.remove(book) : this.add(book);
   }
 
-  isExist(bookState) {
-    return this.list.includes(bookState);
+  add(book) {
+    this.list.push(book);
+    return this.list;
+  }
+
+  remove(book) {
+    return this.list.filter((element) => element.key !== book.key);
+  }
+
+  isExist(book) {
+    return this.list.find((element) => element.key === book.key);
   }
 }

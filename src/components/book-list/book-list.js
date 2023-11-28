@@ -20,9 +20,7 @@ export class BookList extends DivComponent {
       return this.element;
     }
 
-    this.element.innerHTML = `<h1>Books found - ${
-      this.parentState.numFound ?? 0
-    }</h1>`;
+    this.element.innerHTML = '';
     this.parentState.list.forEach((book, index) => {
       this.#list.set(index, new Book(this.appState, book));
       this.element.append(this.#list.get(index).render(index));

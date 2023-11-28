@@ -1,6 +1,7 @@
 import onChange from 'on-change';
 import { AbstractView } from '../../common/view.js';
 import { Search } from '../../components/search/search.js';
+import { BookList } from '../../components/book-list/book-list.js';
 
 export class MainView extends AbstractView {
   viewState = {
@@ -33,6 +34,13 @@ export class MainView extends AbstractView {
 
   renderSearch() {
     this.elements.render(AbstractView.SEARCH, new Search(this.viewState));
+  }
+
+  renderBookList() {
+    this.elements.render(
+      AbstractView.BOOK_LIST,
+      new BookList(this.appState, this.viewState),
+    );
   }
 
   appStateHook(path) {

@@ -1,19 +1,15 @@
 import onChange from 'on-change';
 import { AbstractView } from '../../common/view.js';
+import { BookList } from '../../components/book-list/book-list.js';
 
 export class FavoritesView extends AbstractView {
-  viewState = {
-    list: [],
-    numFound: 0,
-    offset: 0,
-  };
-
   constructor(appState) {
     super();
     this.appState = appState;
     this.appState = onChange(this.appState, this.appStateHook.bind(this));
-    this.viewState.list = this.appState.favorites.list;
-    this.updateState();
+    this.bookList = new BookList(this.appState, {
+      list: this.appState.favorites.list,
+    });
     this.setTitle('Favorites');
   }
 
@@ -28,17 +24,17 @@ export class FavoritesView extends AbstractView {
     this.renderBookList();
   }
 
+  renderBookList() {
+    this.bookList.parentState.list = this.appState.favorites.list;
+    this.elements.render(AbstractView.BOOK_LIST, this.bookList);
+  }
+
   appStateHook(path) {
     switch (path) {
       case 'favorites':
-        this.updateState();
         this.renderHeader();
         this.renderBookList();
         break;
     }
-  }
-
-  updateState() {
-    this.viewState.numFound = this.appState.favorites.list.length;
   }
 }
